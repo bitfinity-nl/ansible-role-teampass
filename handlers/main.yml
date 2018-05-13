@@ -1,0 +1,15 @@
+---
+  # Title: tasks file for ansible-role-teampass
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: handlers/main.yml
+  #
+  # Description:
+  #   Password server for teams
+
+  # Apache2
+  - name: apache2_restart
+    systemd:
+      name: apache2
+      state: restarted

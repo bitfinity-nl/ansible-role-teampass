@@ -1,0 +1,17 @@
+---
+  # Title: defaults file for ansible-role-teampass
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: defaults/main.yml
+  #
+  # Description:
+  #   Password server for teams
+
+
+  MySQL_ROOT_ACCOUNT  : root
+  MySQL_ROOT_PASSWORD : password
+
+  tp_dbname           : teampass
+  tp_dbuser           : teampass
+  tp_passwd           : teampass

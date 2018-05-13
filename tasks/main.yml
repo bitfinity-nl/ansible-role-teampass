@@ -1,0 +1,78 @@
+---
+  # Title: tasks file for ansible-role-teampass
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: tasks/main.yml
+  #
+  # Description:
+  #   Password server for teams
+
+  - name: "Install lamp-server"
+    shell: apt-get install -y lamp-server^
+
+  - name: "Install packages"
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - git
+      - mcrypt 
+      - curl
+      - php-mysql
+      - php-opcache
+      - php-mbstring
+      - php-ldap
+      - php-bcmath 
+      - php-gd
+      - php-xml
+      - php-common
+      - php-mysqlnd
+      - php-curl
+
+  - name: "Create initial TeamPass MySQL database"
+    mysql_db:
+      name: "{{ tp_dbname }}"
+      encoding: utf8
+      state: present
+      login_user: "{{ MySQL_ROOT_ACCOUNT }}"
+      login_password: "{{ MySQL_ROOT_PASSWORD }}"
+
+  - name: "Create TeamPass MySQL database user"
+    mysql_user:
+      name: "{{ tp_dbuser }}"
+      password: "{{ tp_dbpass }}"
+      priv: "{{ tp_dbname }}.*:ALL,GRANT"
+      state: present
+      login_user: "{{ MySQL_ROOT_ACCOUNT }}"
+      login_password: "{{ MySQL_ROOT_PASSWORD }}"
+
+  - name: "Download sources from git repository"
+    git:
+      repo: https://github.com/nilsteampassnet/TeamPass.git
+      dest: /var/www/html/teampass
+    
+  - name: "Set Permissions recursively on /var/www/html/teampass "
+    file:
+      path: /var/www/html/teampass 
+      owner: www-data
+      group: www-data
+      recurse: yes
+
+  - name: "Create directory /opt/teampass/saltkey for saltkey"
+    file:
+      path: /opt/teampass/saltkey
+      owner: www-data
+      group: www-data
+      mode: 755
+      recurse: yes
+
+  - name: "PHP set max_execution_time = 30 to max_execution_time = 120"
+    replace:
+      path: /etc/php/7.2/apache2/php.ini
+      regexp: 'max_execution_time = 30'
+      replace: 'max_execution_time = 120'
+      backup: yes
+    notify:
+      - apache2_restart

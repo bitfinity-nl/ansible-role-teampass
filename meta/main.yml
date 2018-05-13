@@ -1,0 +1,15 @@
+galaxy_info:
+  author: L. Rutten
+  description: Installing password server on Ubuntu
+  company: Bitfinity-NL
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - bionic
+  galaxy_tags:
+    - Ubuntu
+    - Bionic
+    - TeamPass
+    - Password
