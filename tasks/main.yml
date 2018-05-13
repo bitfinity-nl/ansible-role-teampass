@@ -52,7 +52,8 @@
     git:
       repo: https://github.com/nilsteampassnet/TeamPass.git
       dest: /var/www/html/teampass
-    
+      update: no
+
   - name: "Set Permissions recursively on /var/www/html/teampass "
     file:
       path: /var/www/html/teampass 
